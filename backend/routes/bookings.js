@@ -5,6 +5,15 @@ const { v4: uuidv4 } = require('uuid');
 const { Booking, Item, User, Notification, Transaction, Review } = require('../models');
 const authRouter = require('./auth');
 const auth = authRouter.auth;
+const mongoose = require('mongoose');
+
+// Validate ObjectIds passed in query parameters
+router.param('id', (req, res, next, id) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: 'Invalid ID format' });
+  }
+  next();
+});
 
 // Helper: create notification
 async function notify(userId, title, body, type, ref = '') {

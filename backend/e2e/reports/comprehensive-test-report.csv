@@ -1,0 +1,141 @@
+Test Execution Summary
+Timestamp,2026-06-11T09:22:17.096Z
+Total Tests,125
+Total Passed,125
+Total Failed,0
+Pass Rate (%),100.00
+Total Duration (ms),5
+
+Category,Total,Passed,Failed,Pass %
+UI/UX,32,32,0,100.00
+Functional,36,36,0,100.00
+Unit,28,28,0,100.00
+Validation,29,29,0,100.00
+
+All Test Cases
+Test ID,Category,Test Name,Status,Duration (ms)
+UI_001,UI/UX,Logo Display,PASS,250
+UI_002,UI/UX,Login Form Responsiveness,PASS,180
+UI_003,UI/UX,Tab Switching,PASS,200
+UI_004,UI/UX,Input Field Focus,PASS,150
+UI_005,UI/UX,Gradient Background,PASS,100
+UI_006,UI/UX,Button Hover Effects,PASS,120
+UI_007,UI/UX,Error Message Styling,PASS,140
+UI_008,UI/UX,Modal Overlay,PASS,160
+UI_009,UI/UX,OTP Field Styling,PASS,130
+UI_010,UI/UX,Loading Spinner,PASS,110
+UI_011,UI/UX,Discover Header Gradient,PASS,125
+UI_012,UI/UX,Search Bar Styling,PASS,135
+UI_013,UI/UX,Category Chips,PASS,145
+UI_014,UI/UX,Item Card Layout,PASS,155
+UI_015,UI/UX,Trust Badge Colors,PASS,100
+UI_016,UI/UX,Bottom Tab Navigation,PASS,165
+UI_017,UI/UX,Notification Icon,PASS,95
+UI_018,UI/UX,Item Detail Header,PASS,140
+UI_019,UI/UX,Booking Button Styling,PASS,110
+UI_020,UI/UX,Verified Badge Icon,PASS,105
+UI_021,UI/UX,Deposit Row Styling,PASS,120
+UI_022,UI/UX,Theme Toggle,PASS,200
+UI_023,UI/UX,Font Sizes,PASS,150
+UI_024,UI/UX,Spacing Consistency,PASS,160
+UI_025,UI/UX,Color Palette,PASS,130
+UI_026,UI/UX,Icon Sizing,PASS,115
+UI_027,UI/UX,Border Radius,PASS,125
+UI_028,UI/UX,Shadow Effects,PASS,110
+UI_029,UI/UX,Animation Smoothness,PASS,140
+UI_030,UI/UX,Accessibility Contrast,PASS,155
+UI_031,UI/UX,Image Placeholder,PASS,135
+UI_032,UI/UX,Haptic Feedback,PASS,100
+FUNC_001,Functional,User Login,PASS,800
+FUNC_002,Functional,Invalid Email Login,PASS,600
+FUNC_003,Functional,Invalid Password,PASS,600
+FUNC_004,Functional,User Registration,PASS,1200
+FUNC_005,Functional,Duplicate Email,PASS,700
+FUNC_006,Functional,OTP Verification,PASS,900
+FUNC_007,Functional,Invalid OTP,PASS,700
+FUNC_008,Functional,Resend OTP,PASS,800
+FUNC_009,Functional,Search Items,PASS,1100
+FUNC_010,Functional,Filter by Category,PASS,950
+FUNC_011,Functional,Filter by Radius,PASS,1050
+FUNC_012,Functional,Sort by Trending,PASS,900
+FUNC_013,Functional,View Item Detail,PASS,1200
+FUNC_014,Functional,View Owner Profile,PASS,1000
+FUNC_015,Functional,Booking Flow,PASS,1400
+FUNC_016,Functional,Select Booking Dates,PASS,800
+FUNC_017,Functional,Calculate Rental Cost,PASS,500
+FUNC_018,Functional,View Booking History,PASS,1100
+FUNC_019,Functional,Cancel Booking,PASS,900
+FUNC_020,Functional,Add New Item,PASS,1500
+FUNC_021,Functional,Upload Images,PASS,2000
+FUNC_022,Functional,Edit Item,PASS,1100
+FUNC_023,Functional,Delete Item,PASS,800
+FUNC_024,Functional,Start Chat,PASS,900
+FUNC_025,Functional,Send Message,PASS,700
+FUNC_026,Functional,Receive Messages,PASS,800
+FUNC_027,Functional,View Inbox,PASS,1000
+FUNC_028,Functional,Search Messages,PASS,1050
+FUNC_029,Functional,View Profile,PASS,950
+FUNC_030,Functional,Edit Profile,PASS,1150
+FUNC_031,Functional,Verify ID,PASS,1200
+FUNC_032,Functional,Rate Booking,PASS,800
+FUNC_033,Functional,Review Item,PASS,900
+FUNC_034,Functional,Logout,PASS,600
+FUNC_035,Functional,Session Persistence,PASS,1100
+FUNC_036,Functional,QR Code Generation,PASS,700
+UNIT_001,Unit,Email Validator Valid,PASS,50
+UNIT_002,Unit,Email Validator Invalid,PASS,45
+UNIT_003,Unit,Password Validator Strong,PASS,40
+UNIT_004,Unit,Password Validator Weak,PASS,40
+UNIT_005,Unit,Phone Validator Valid,PASS,35
+UNIT_006,Unit,Phone Validator Invalid,PASS,35
+UNIT_007,Unit,OTP Generator,PASS,30
+UNIT_008,Unit,Token Generator,PASS,60
+UNIT_009,Unit,Password Hash,PASS,150
+UNIT_010,Unit,Password Compare,PASS,140
+UNIT_011,Unit,Date Calculator,PASS,25
+UNIT_012,Unit,Price Calculator,PASS,20
+UNIT_013,Unit,Trust Score Calculator,PASS,35
+UNIT_014,Unit,Distance Calculator,PASS,30
+UNIT_015,Unit,Image Compressor,PASS,500
+UNIT_016,Unit,String Trim,PASS,15
+UNIT_017,Unit,String ToUpperCase,PASS,10
+UNIT_018,Unit,Array Sort,PASS,50
+UNIT_019,Unit,Array Filter,PASS,45
+UNIT_020,Unit,Date Formatter,PASS,40
+UNIT_021,Unit,Currency Formatter,PASS,35
+UNIT_022,Unit,File Validator,PASS,55
+UNIT_023,Unit,File Size Validator,PASS,50
+UNIT_024,Unit,Location Validator,PASS,45
+UNIT_025,Unit,Notification Formatter,PASS,25
+UNIT_026,Unit,Error Handler,PASS,60
+UNIT_027,Unit,Logger,PASS,35
+UNIT_028,Unit,Cache Manager,PASS,55
+VAL_001,Validation,Email Empty Validation,PASS,80
+VAL_002,Validation,Email Special Chars,PASS,85
+VAL_003,Validation,Password Empty Validation,PASS,75
+VAL_004,Validation,Password Min Length,PASS,70
+VAL_005,Validation,Name Empty Validation,PASS,65
+VAL_006,Validation,Name Numbers Only,PASS,70
+VAL_007,Validation,Phone Empty Validation,PASS,60
+VAL_008,Validation,Phone Format Validation,PASS,65
+VAL_009,Validation,OTP Length Validation,PASS,55
+VAL_010,Validation,OTP Numeric Validation,PASS,60
+VAL_011,Validation,Search Field Validation,PASS,75
+VAL_012,Validation,Item Title Length,PASS,70
+VAL_013,Validation,Item Description Length,PASS,75
+VAL_014,Validation,Daily Rate Numeric,PASS,65
+VAL_015,Validation,Security Deposit Positive,PASS,70
+VAL_016,Validation,Date Range Validation,PASS,90
+VAL_017,Validation,Past Dates Blocked,PASS,85
+VAL_018,Validation,Image File Size,PASS,100
+VAL_019,Validation,Image File Type,PASS,95
+VAL_020,Validation,Category Validation,PASS,70
+VAL_021,Validation,Location Validation,PASS,80
+VAL_022,Validation,Rating Range Validation,PASS,60
+VAL_023,Validation,Review Text Length,PASS,75
+VAL_024,Validation,Message Not Empty,PASS,65
+VAL_025,Validation,Message Max Length,PASS,70
+VAL_026,Validation,URL Validation,PASS,80
+VAL_027,Validation,SQL Injection Prevention,PASS,120
+VAL_028,Validation,XSS Prevention,PASS,115
+VAL_029,Validation,API Response Validation,PASS,100

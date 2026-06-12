@@ -137,6 +137,8 @@ export default function AuthScreen() {
                     animateFade(400);
                   }}
                   style={[s.tab, mode === m && s.tabActive]}
+                  testID={m === 'login' ? 'auth-tab-login' : 'auth-tab-register'}
+                  accessibilityLabel={m === 'login' ? 'auth-tab-login' : 'auth-tab-register'}
                 >
                   <Text style={[s.tabText, mode === m && s.tabTextActive]}>
                     {m === 'login' ? 'Sign In' : 'Sign Up'}
@@ -151,17 +153,35 @@ export default function AuthScreen() {
               {mode === 'register' && (
                 <>
                   <Text style={s.label}>Full Name</Text>
-                  <TextInput style={INPUT} value={name} onChangeText={setName} />
+                  <TextInput
+                    style={INPUT}
+                    value={name}
+                    onChangeText={setName}
+                    testID="auth-name"
+                    accessibilityLabel="auth-name"
+                  />
                 </>
               )}
 
               <Text style={s.label}>Email</Text>
-              <TextInput style={INPUT} value={email} onChangeText={setEmail} />
+              <TextInput
+                style={INPUT}
+                value={email}
+                onChangeText={setEmail}
+                testID="auth-email"
+                accessibilityLabel="auth-email"
+              />
 
               {mode === 'register' && (
                 <>
                   <Text style={s.label}>Phone</Text>
-                  <TextInput style={INPUT} value={phone} onChangeText={setPhone} />
+                  <TextInput
+                    style={INPUT}
+                    value={phone}
+                    onChangeText={setPhone}
+                    testID="auth-phone"
+                    accessibilityLabel="auth-phone"
+                  />
                 </>
               )}
 
@@ -171,9 +191,11 @@ export default function AuthScreen() {
                 secureTextEntry={!showPass}
                 value={password}
                 onChangeText={setPassword}
+                testID="auth-password"
+                accessibilityLabel="auth-password"
               />
 
-              <TouchableOpacity onPress={handleSubmit}>
+              <TouchableOpacity onPress={handleSubmit} testID="auth-submit" accessibilityLabel="auth-submit">
                 <LinearGradient colors={['#7C3AED', '#5B21B6']} style={s.btnGrad}>
                   {loading ? (
                     <ActivityIndicator color="#FFF" />
@@ -204,9 +226,11 @@ export default function AuthScreen() {
               onChangeText={setOtp}
               keyboardType="numeric"
               maxLength={6}
+              testID="auth-otp"
+              accessibilityLabel="auth-otp"
             />
 
-            <TouchableOpacity onPress={handleOtpVerify}>
+            <TouchableOpacity onPress={handleOtpVerify} testID="auth-verify-otp" accessibilityLabel="auth-verify-otp">
               <LinearGradient colors={['#7C3AED', '#5B21B6']} style={s.btnGrad}>
                 {otpLoading ? (
                   <ActivityIndicator color="#FFF" />
@@ -216,7 +240,7 @@ export default function AuthScreen() {
               </LinearGradient>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => resendOtp()}>
+            <TouchableOpacity onPress={() => resendOtp()} testID="auth-resend-otp" accessibilityLabel="auth-resend-otp">
               <Text style={{ color: Colors.primaryLight, marginTop: 12 }}>
                 Resend OTP
               </Text>

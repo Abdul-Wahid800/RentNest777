@@ -1,12 +1,16 @@
 {
   "name": "rentnest-frontend",
   "version": "1.0.0",
+  "homepage": "https://Abdul-Wahid800.github.io/RentNest777",
   "main": "expo/AppEntry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build": "expo export -p web",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
@@ -37,7 +41,8 @@
     "socket.io-client": "^4.6.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0"
+    "@babel/core": "^7.24.0",
+    "gh-pages": "^6.3.0"
   },
   "private": true
 }

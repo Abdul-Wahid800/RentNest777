@@ -5,6 +5,7 @@ const UiUxTestSuite = require('./uiUxTests');
 const FunctionalTestSuite = require('./functionalTests');
 const UnitTestSuite = require('./unitTests');
 const ValidationTestSuite = require('./validationTests');
+const VulnerabilityTestSuite = require('./vulnerabilityTests');
 
 const resultsDir = path.join(__dirname, 'reports');
 
@@ -14,7 +15,8 @@ class ComprehensiveTestRunner {
       uiUx: [],
       functional: [],
       unit: [],
-      validation: []
+      validation: [],
+      vulnerability: []
     };
     this.startTime = Date.now();
   }
@@ -48,6 +50,10 @@ class ComprehensiveTestRunner {
     const validationSuite = new ValidationTestSuite();
     this.allResults.validation = await validationSuite.runTests();
 
+    // Vulnerability Tests
+    const vulnerabilitySuite = new VulnerabilityTestSuite();
+    this.allResults.vulnerability = await vulnerabilitySuite.runTests();
+
     const totalDuration = Date.now() - this.startTime;
     this.generateReports(totalDuration);
   }
@@ -71,9 +77,10 @@ class ComprehensiveTestRunner {
     const functionalPass = this.allResults.functional.filter(t => t.status === 'PASS').length;
     const unitPass = this.allResults.unit.filter(t => t.status === 'PASS').length;
     const validationPass = this.allResults.validation.filter(t => t.status === 'PASS').length;
+    const vulnerabilityPass = this.allResults.vulnerability.filter(t => t.status === 'PASS').length;
 
-    const totalTests = this.allResults.uiUx.length + this.allResults.functional.length + this.allResults.unit.length + this.allResults.validation.length;
-    const totalPass = uiUxPass + functionalPass + unitPass + validationPass;
+    const totalTests = this.allResults.uiUx.length + this.allResults.functional.length + this.allResults.unit.length + this.allResults.validation.length + this.allResults.vulnerability.length;
+    const totalPass = uiUxPass + functionalPass + unitPass + validationPass + vulnerabilityPass;
     const totalFail = totalTests - totalPass;
     const passPercentage = ((totalPass / totalTests) * 100).toFixed(2);
 
@@ -103,6 +110,11 @@ class ComprehensiveTestRunner {
         pass: validationPass,
         fail: this.allResults.validation.length - validationPass
       },
+      vulnerability: {
+        count: this.allResults.vulnerability.length,
+        pass: vulnerabilityPass,
+        fail: this.allResults.vulnerability.length - vulnerabilityPass
+      },
       timestamp: new Date().toISOString()
     };
   }
@@ -124,7 +136,8 @@ class ComprehensiveTestRunner {
       ['UI/UX', summary.uiUx.count, summary.uiUx.pass, summary.uiUx.fail, ((summary.uiUx.pass / summary.uiUx.count) * 100).toFixed(2)],
       ['Functional', summary.functional.count, summary.functional.pass, summary.functional.fail, ((summary.functional.pass / summary.functional.count) * 100).toFixed(2)],
       ['Unit', summary.unit.count, summary.unit.pass, summary.unit.fail, ((summary.unit.pass / summary.unit.count) * 100).toFixed(2)],
-      ['Validation', summary.validation.count, summary.validation.pass, summary.validation.fail, ((summary.validation.pass / summary.validation.count) * 100).toFixed(2)]
+      ['Validation', summary.validation.count, summary.validation.pass, summary.validation.fail, ((summary.validation.pass / summary.validation.count) * 100).toFixed(2)],
+      ['Vulnerability', summary.vulnerability.count, summary.vulnerability.pass, summary.vulnerability.fail, ((summary.vulnerability.pass / summary.vulnerability.count) * 100).toFixed(2)]
     ];
     const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
     XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
@@ -153,6 +166,12 @@ class ComprehensiveTestRunner {
     const validationSheet = XLSX.utils.aoa_to_sheet(validationData);
     XLSX.utils.book_append_sheet(workbook, validationSheet, 'Validation Tests');
 
+    // Vulnerability Sheet
+    const vulnerabilityData = [['Test ID', 'Test Name', 'Status', 'Duration (ms)']];
+    this.allResults.vulnerability.forEach(t => vulnerabilityData.push([t.id, t.name, t.status, t.duration]));
+    const vulnerabilitySheet = XLSX.utils.aoa_to_sheet(vulnerabilityData);
+    XLSX.utils.book_append_sheet(workbook, vulnerabilitySheet, 'Vulnerability Tests');
+
     const reportPath = path.join(resultsDir, 'comprehensive-test-report.xlsx');
     XLSX.writeFile(workbook, reportPath);
     console.log('📊 Excel Report:', reportPath);
@@ -171,13 +190,15 @@ class ComprehensiveTestRunner {
     csvContent += `UI/UX,${summary.uiUx.count},${summary.uiUx.pass},${summary.uiUx.fail},${((summary.uiUx.pass / summary.uiUx.count) * 100).toFixed(2)}\n`;
     csvContent += `Functional,${summary.functional.count},${summary.functional.pass},${summary.functional.fail},${((summary.functional.pass / summary.functional.count) * 100).toFixed(2)}\n`;
     csvContent += `Unit,${summary.unit.count},${summary.unit.pass},${summary.unit.fail},${((summary.unit.pass / summary.unit.count) * 100).toFixed(2)}\n`;
-    csvContent += `Validation,${summary.validation.count},${summary.validation.pass},${summary.validation.fail},${((summary.validation.pass / summary.validation.count) * 100).toFixed(2)}\n\n`;
+    csvContent += `Validation,${summary.validation.count},${summary.validation.pass},${summary.validation.fail},${((summary.validation.pass / summary.validation.count) * 100).toFixed(2)}\n`;
+    csvContent += `Vulnerability,${summary.vulnerability.count},${summary.vulnerability.pass},${summary.vulnerability.fail},${((summary.vulnerability.pass / summary.vulnerability.count) * 100).toFixed(2)}\n\n`;
 
     csvContent += 'All Test Cases\nTest ID,Category,Test Name,Status,Duration (ms)\n';
     this.allResults.uiUx.forEach(t => csvContent += `${t.id},UI/UX,${t.name},${t.status},${t.duration}\n`);
     this.allResults.functional.forEach(t => csvContent += `${t.id},Functional,${t.name},${t.status},${t.duration}\n`);
     this.allResults.unit.forEach(t => csvContent += `${t.id},Unit,${t.name},${t.status},${t.duration}\n`);
     this.allResults.validation.forEach(t => csvContent += `${t.id},Validation,${t.name},${t.status},${t.duration}\n`);
+    this.allResults.vulnerability.forEach(t => csvContent += `${t.id},Vulnerability,${t.name},${t.status},${t.duration}\n`);
 
     const reportPath = path.join(resultsDir, 'comprehensive-test-report.csv');
     fs.writeFileSync(reportPath, csvContent, 'utf8');
@@ -191,7 +212,8 @@ class ComprehensiveTestRunner {
         uiUx: this.allResults.uiUx,
         functional: this.allResults.functional,
         unit: this.allResults.unit,
-        validation: this.allResults.validation
+        validation: this.allResults.validation,
+        vulnerability: this.allResults.vulnerability
       }
     };
 
@@ -230,7 +252,8 @@ class ComprehensiveTestRunner {
         functionalityComplete: summary.functional.pass === summary.functional.count,
         uiUxOptimized: summary.uiUx.pass === summary.uiUx.count,
         unitTestsPassed: summary.unit.pass === summary.unit.count,
-        securityValidated: summary.validation.pass === summary.validation.count
+        validationPassed: summary.validation.pass === summary.validation.count,
+        securityValidated: summary.vulnerability.pass === summary.vulnerability.count
       },
       generatedAt: new Date().toISOString()
     };
@@ -249,7 +272,10 @@ class ComprehensiveTestRunner {
       recommendations.push('⚠️  Fix functional test failures before deployment');
     }
     if (summary.validation.fail > 0) {
-      recommendations.push('⚠️  Address validation/security test failures');
+      recommendations.push('⚠️  Address validation test failures');
+    }
+    if (summary.vulnerability.fail > 0) {
+      recommendations.push('⚠️  Address vulnerability/security test failures');
     }
     if (summary.uiUx.fail > 0) {
       recommendations.push('⚠️  Review UI/UX inconsistencies');

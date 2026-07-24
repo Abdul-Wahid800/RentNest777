@@ -633,7 +633,7 @@ header {
   <div class="stats-row">
     <div class="stat-card total">
       <div class="stat-label">Total Tests</div>
-      <div class="stat-value" id="statTotal">352</div>
+      <div class="stat-value" id="statTotal">362</div>
       <div class="stat-sub">Across all suites</div>
     </div>
     <div class="stat-card passed">
@@ -662,7 +662,7 @@ header {
   <div class="progress-section">
     <div class="progress-header">
       <div class="progress-title">⚡ Test Execution Progress</div>
-      <div class="progress-count" id="progressCount">0 / 352</div>
+      <div class="progress-count" id="progressCount">0 / 362</div>
     </div>
     <div class="progress-track">
       <div class="progress-fill" id="progressFill"></div>
@@ -754,7 +754,7 @@ let filter   = 'all';
 let results  = [];
 let running  = false;
 
-let TOTAL = 352;
+let TOTAL = 362;
 
 // Category tracking
 const cats = {};
@@ -769,7 +769,8 @@ const CATEGORIES = [
   'Health','Authentication','Items','Bookings','Chat','Security',
   'Business Logic','AI Routes','Navigation','Performance','Error Handling',
   'Mobile','Discovery','Item Details','Item Management','Profile',
-  'Booking History','UI/UX','Functional','Unit','Validation','Permissions'
+  'Booking History','UI/UX','Functional','Unit','Validation','Permissions',
+  'Vulnerability'
 ];
 
 function initCatBars() {

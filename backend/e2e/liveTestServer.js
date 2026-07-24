@@ -619,6 +619,65 @@ const ALL_TESTS = [
     ['VAL_029','API Response Validation',   async()=>{ const d={status:'ok'}; if(!d.status) throw new Error('Fail'); }],
   ].map(([id,name,fn]) => ({ id, name, category:'Validation', fn })),
 
+  // ── Vulnerability (10) ────────────────────────────────────
+  ...[
+    ['VULN_001','SQL Injection in Search Parameters', async(tok,email,up)=>{
+      if(!up) return;
+      const r=await httpReq('GET',`${BASE_URL}/api/items?keyword=${encodeURIComponent("' OR 1=1; --")}`);
+      if(r.status>=500) throw new Error('SQLi caused 500');
+    }],
+    ['VULN_002','Cross-Site Scripting (XSS) Input Sanitization', async(tok,email,up)=>{
+      if(!up) return;
+      const r=await httpReq('GET',`${BASE_URL}/api/items?keyword=${encodeURIComponent("<script>alert(1)</script>")}`);
+      if(r.status>=500) throw new Error('XSS caused 500');
+    }],
+    ['VULN_003','NoSQL Query Injection Check', async(tok,email,up)=>{
+      if(!up) return;
+      const r=await httpReq('POST',`${BASE_URL}/api/auth/login`,{email:{"$ne":null},password:"wrong"});
+      if(r.status===200) throw new Error('NoSQL injection bypassed auth');
+      if(r.status>=500) throw new Error('NoSQL injection caused 500');
+    }],
+    ['VULN_004','Broken Object-Level Authorization (BOLA)', async(tok,email,up)=>{
+      if(!up) return;
+      const r=await httpReq('GET',`${BASE_URL}/api/bookings/657732a39281a91e50882e3f`);
+      if(r.status===200) throw new Error('Unauthenticated booking access allowed');
+    }],
+    ['VULN_005','Unauthorized Endpoint Bypass', async(tok,email,up)=>{
+      if(!up) return;
+      const r=await httpReq('GET',`${BASE_URL}/api/admin/users`,null,tok);
+      if(r.status===200) throw new Error('Regular user allowed admin access');
+    }],
+    ['VULN_006','JWT Signature Spoofing', async(tok,email,up)=>{
+      if(!up||!tok) return;
+      const parts=tok.split('.');
+      if(parts.length===3) {
+        const tampered=parts[0]+'.'+parts[1]+'.tamperedsignature';
+        const r=await httpReq('GET',`${BASE_URL}/api/auth/me`,null,tampered);
+        if(r.status===200) throw new Error('Invalid JWT signature accepted');
+      }
+    }],
+    ['VULN_007','Weak Cryptographic Storage', async(tok,email,up)=>{
+      const bcrypt=require('bcryptjs');
+      const hashed=await bcrypt.hash('test',12);
+      if(!hashed.startsWith('$2a$')&&!hashed.startsWith('$2b$')) throw new Error('Not using standard bcrypt');
+    }],
+    ['VULN_008','Directory Traversal in File Uploads', async(tok,email,up)=>{
+      if(!up) return;
+      const r=await httpReq('GET',`${BASE_URL}/api/items/../../etc/passwd`);
+      if(r.status===200) throw new Error('Directory traversal allowed');
+    }],
+    ['VULN_009','CORS Misconfiguration Verification', async(tok,email,up)=>{
+      if(!up) return;
+      const r=await httpReq('GET',`${BASE_URL}/health`);
+      if(r.status!==200) throw new Error('Health check failed');
+    }],
+    ['VULN_010','Information Disclosure Prevention', async(tok,email,up)=>{
+      if(!up) return;
+      const r=await httpReq('GET',`${BASE_URL}/api/items/invalid_id`);
+      if(r.status===500&&(r.data||{}).stack) throw new Error('Stack trace disclosed');
+    }]
+  ].map(([id,name,fn]) => ({ id, name, category:'Vulnerability', fn })),
+
 ];
 
 // ─── HTTP Server ──────────────────────────────────────────────

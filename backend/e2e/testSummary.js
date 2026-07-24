@@ -22,7 +22,8 @@ class TestSummaryGenerator {
     markdown += `- **UI/UX Tests:** ${this.testCases.uiUxTests.count}\n`;
     markdown += `- **Functional Tests:** ${this.testCases.functionalTests.count}\n`;
     markdown += `- **Unit Tests:** ${this.testCases.unitTests.count}\n`;
-    markdown += `- **Validation Tests:** ${this.testCases.validationTests.count}\n\n`;
+    markdown += `- **Validation Tests:** ${this.testCases.validationTests.count}\n`;
+    markdown += `- **Vulnerability Tests:** ${this.testCases.vulnerabilityTests.count}\n\n`;
 
     // UI/UX Section
     markdown += this.generateTestCategorySection('UI/UX Testing', this.testCases.uiUxTests);
@@ -35,6 +36,9 @@ class TestSummaryGenerator {
     
     // Validation Section
     markdown += this.generateTestCategorySection('Validation Testing', this.testCases.validationTests);
+    
+    // Vulnerability Section
+    markdown += this.generateTestCategorySection('Vulnerability Testing', this.testCases.vulnerabilityTests);
 
     markdown += '## Test Coverage Areas\n\n';
     markdown += '### Authentication & Security\n';
@@ -153,7 +157,7 @@ class TestSummaryGenerator {
     <p style="color: #999; margin-bottom: 30px;">Generated: ${new Date().toLocaleString()}</p>
 
     <h2>Test Execution Summary</h2>
-    <div class="stats">
+    <div class="stats" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
       <div class="stat-card green">
         <div class="stat-value">${this.testCases.totalTestCases}</div>
         <div class="stat-label">Total Test Cases</div>
@@ -169,6 +173,14 @@ class TestSummaryGenerator {
       <div class="stat-card orange">
         <div class="stat-value">${this.testCases.unitTests.count}</div>
         <div class="stat-label">Unit Tests</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-value">${this.testCases.validationTests.count}</div>
+        <div class="stat-label">Validation Tests</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-value">${this.testCases.vulnerabilityTests.count}</div>
+        <div class="stat-label">Vulnerability Tests</div>
       </div>
     </div>
 
@@ -207,6 +219,12 @@ class TestSummaryGenerator {
           <td>Input validation, security, data integrity</td>
           <td><span class="status-pass">✅ Complete</span></td>
         </tr>
+        <tr>
+          <td><strong>Vulnerability Testing</strong></td>
+          <td>${this.testCases.vulnerabilityTests.count}</td>
+          <td>Security hardening, SQLi, XSS, BOLA, JWT, CORS</td>
+          <td><span class="status-pass">✅ Complete</span></td>
+        </tr>
       </tbody>
     </table>
 
@@ -216,7 +234,7 @@ class TestSummaryGenerator {
         ✅ All test categories implemented (UI/UX, Functional, Unit, Validation)
       </div>
       <div class="checklist-item done">
-        ✅ 125+ unique test cases created
+        ✅ 135+ unique test cases created
       </div>
       <div class="checklist-item done">
         ✅ Priority levels assigned (CRITICAL, HIGH, MEDIUM, LOW)

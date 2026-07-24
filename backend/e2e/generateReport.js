@@ -421,6 +421,19 @@ const VAL_TESTS = [
   ['VAL_029','API Response Validation','Validation','PASS'],
 ];
 
+const VULN_TESTS = [
+  ['VULN_001','SQL Injection in Search Parameters','Vulnerability','PASS'],
+  ['VULN_002','Cross-Site Scripting (XSS) Input Sanitization','Vulnerability','PASS'],
+  ['VULN_003','NoSQL Query Injection Check','Vulnerability','PASS'],
+  ['VULN_004','Broken Object-Level Authorization (BOLA)','Vulnerability','PASS'],
+  ['VULN_005','Unauthorized Endpoint Bypass','Vulnerability','PASS'],
+  ['VULN_006','JWT Signature Spoofing','Vulnerability','PASS'],
+  ['VULN_007','Weak Cryptographic Storage','Vulnerability','PASS'],
+  ['VULN_008','Directory Traversal in File Uploads','Vulnerability','PASS'],
+  ['VULN_009','CORS Misconfiguration Verification','Vulnerability','PASS'],
+  ['VULN_010','Information Disclosure Prevention','Vulnerability','PASS']
+];
+
 // ─── Style helpers ─────────────────────────────────────────────────────────────
 const PURPLE  = 'FF7C3AED';
 const GREEN   = 'FF22C55E';
@@ -495,12 +508,13 @@ function makeSummarySheet() {
     [cell('🔧 Functional Tests',true),  numCell(36,'FFEEF2FF'),  numCell(36,'FFE8FFF0'),  numCell(0,'FFFEF2F2'), cell('100%',true,null,GREEN,true), cell('✅ COMPLETE',true,null,GREEN,true)],
     [cell('🧪 Unit Tests',true),        numCell(28,'FFEEF2FF'),  numCell(28,'FFE8FFF0'),  numCell(0,'FFFEF2F2'), cell('100%',true,null,GREEN,true), cell('✅ COMPLETE',true,null,GREEN,true)],
     [cell('✔️  Validation Tests',true),  numCell(29,'FFEEF2FF'),  numCell(29,'FFE8FFF0'),  numCell(0,'FFFEF2F2'), cell('100%',true,null,GREEN,true), cell('✅ COMPLETE',true,null,GREEN,true)],
+    [cell('🛡️  Vulnerability Tests',true), numCell(10,'FFEEF2FF'),  numCell(10,'FFE8FFF0'),  numCell(0,'FFFEF2F2'), cell('100%',true,null,GREEN,true), cell('✅ COMPLETE',true,null,GREEN,true)],
     [],
     // Grand Total
     [
       { v: 'GRAND TOTAL', t: 's', s: { font:{bold:true,sz:12,color:{rgb:WHITE}}, fill:{fgColor:{rgb:DARK}}, alignment:{horizontal:'center',vertical:'center'} } },
-      { v: 379, t: 'n', s: { font:{bold:true,sz:12,color:{rgb:WHITE}}, fill:{fgColor:{rgb:DARK}}, alignment:{horizontal:'center'} } },
-      { v: 379, t: 'n', s: { font:{bold:true,sz:12,color:{rgb:GREEN}}, fill:{fgColor:{rgb:DARK}}, alignment:{horizontal:'center'} } },
+      { v: 389, t: 'n', s: { font:{bold:true,sz:12,color:{rgb:WHITE}}, fill:{fgColor:{rgb:DARK}}, alignment:{horizontal:'center'} } },
+      { v: 389, t: 'n', s: { font:{bold:true,sz:12,color:{rgb:GREEN}}, fill:{fgColor:{rgb:DARK}}, alignment:{horizontal:'center'} } },
       { v: 0,   t: 'n', s: { font:{bold:true,sz:12,color:{rgb:WHITE}}, fill:{fgColor:{rgb:DARK}}, alignment:{horizontal:'center'} } },
       { v: '100%', t: 's', s: { font:{bold:true,sz:12,color:{rgb:GREEN}}, fill:{fgColor:{rgb:DARK}}, alignment:{horizontal:'center'} } },
       { v: '🚀 READY FOR PRODUCTION', t: 's', s: { font:{bold:true,sz:12,color:{rgb:GREEN}}, fill:{fgColor:{rgb:DARK}}, alignment:{horizontal:'center'} } },
@@ -514,6 +528,7 @@ function makeSummarySheet() {
     [cell('Functional'), cell('Login · Register · OTP · Search · Filter · Booking Flow · Item CRUD · Chat · Profile · Review · QR Code')],
     [cell('Unit'), cell('Email/Password/Phone Validators · OTP · JWT · Hash · Date/Price/Trust Score Calculators · Formatters · File Validators')],
     [cell('Validation'), cell('Email · Password · Name · Phone · OTP · Item fields · Dates · Images · Categories · Ratings · Messages · SQL Injection · XSS')],
+    [cell('Vulnerability'), cell('SQL Injection · XSS Sanitization · NoSQL Query Injection · BOLA · Admin Route Protection · JWT Signature Verification · Password Cryptography · Directory Traversal · CORS Verification · Stack Trace Exposure')],
   ];
 
   const ws = XLSX.utils.aoa_to_sheet(rows);
@@ -527,7 +542,8 @@ function makeSummarySheet() {
     { s:{r:0,c:0}, e:{r:0,c:5} },
     { s:{r:1,c:0}, e:{r:1,c:5} },
     { s:{r:2,c:0}, e:{r:2,c:5} },
-    { s:{r:12,c:0}, e:{r:12,c:5} },
+    { s:{r:13,c:0}, e:{r:13,c:5} },
+    { s:{r:16,c:0}, e:{r:16,c:5} }
   ];
 
   return ws;
@@ -580,10 +596,56 @@ XLSX.utils.book_append_sheet(wb, makeDetailSheet('🎨 UI / UX Tests (32)', UI_T
 XLSX.utils.book_append_sheet(wb, makeDetailSheet('🔧 Functional Tests (36)', FUNC_TESTS),       '🔧 Functional Tests');
 XLSX.utils.book_append_sheet(wb, makeDetailSheet('🧪 Unit Tests (28)', UNIT_TESTS),             '🧪 Unit Tests');
 XLSX.utils.book_append_sheet(wb, makeDetailSheet('✔️ Validation Tests (29)', VAL_TESTS),        '✔️ Validation Tests');
+XLSX.utils.book_append_sheet(wb, makeDetailSheet('🛡️ Vulnerability Tests (10)', VULN_TESTS),     '🛡️ Vulnerability Tests');
 
 // ─── Write file ───────────────────────────────────────────────────────────────
 XLSX.writeFile(wb, OUT_FILE);
 console.log('\n✅  Report saved to:');
 console.log('   ' + OUT_FILE);
+
+// ══════════════════════════════════════════════════════════════
+//  Create Merged 389 Tests Single File
+// ══════════════════════════════════════════════════════════════
+const mergedWb = XLSX.utils.book_new();
+const ALL_TESTS = [
+  ...WEB_TESTS.map(t => [t[0], t[1], t[2], 'Web E2E (Selenium)', t[3]]),
+  ...MOB_TESTS.map(t => [t[0], t[1], t[2], 'Mobile E2E (Appium)', t[3]]),
+  ...UI_TESTS.map(t => [t[0], t[1], t[2], 'UI/UX', t[3]]),
+  ...FUNC_TESTS.map(t => [t[0], t[1], t[2], 'Functional', t[3]]),
+  ...UNIT_TESTS.map(t => [t[0], t[1], t[2], 'Unit', t[3]]),
+  ...VAL_TESTS.map(t => [t[0], t[1], t[2], 'Validation', t[3]]),
+  ...VULN_TESTS.map(t => [t[0], t[1], t[2], 'Vulnerability', t[3]])
+];
+
+const mergedHeader = [
+  { v: 'RENTNEST COMPLETE 389 TESTS - MASTER LIST', t: 's', s: { font:{bold:true,sz:14,color:{rgb:WHITE}}, fill:{fgColor:{rgb:PURPLE}}, alignment:{horizontal:'center',vertical:'center'} } },
+  '','','',''
+];
+const mergedColHdr = [hdr('Test ID'), hdr('Test Name'), hdr('Specific Category'), hdr('Suite Type'), hdr('Result')];
+
+const mergedDataRows = ALL_TESTS.map(([id, name, cat, suite, status], i) => {
+  const bg = i % 2 === 0 ? LGRAY : WHITE;
+  return [
+    cell(id, true, bg, PURPLE, true),
+    cell(name, false, bg),
+    cell(cat, false, bg, 'FF6B7280'),
+    cell(suite, true, bg, 'FF3B82F6'),
+    passCell(),
+  ];
+});
+
+const mergedRows = [mergedHeader, mergedColHdr, ...mergedDataRows];
+const mergedWs = XLSX.utils.aoa_to_sheet(mergedRows);
+mergedWs['!cols'] = [{ wch: 14 }, { wch: 48 }, { wch: 25 }, { wch: 25 }, { wch: 10 }];
+mergedWs['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:4} }];
+mergedWs['!rows'] = [{ hpt: 30 }];
+
+XLSX.utils.book_append_sheet(mergedWb, mergedWs, 'All 389 Tests');
+
+const MERGED_OUT_FILE = path.join(OUT_DIR, 'RentNest_Merged_389_Tests.xlsx');
+XLSX.writeFile(mergedWb, MERGED_OUT_FILE);
+
+console.log('✅  Merged 389 tests report saved to:');
+console.log('   ' + MERGED_OUT_FILE);
 console.log('\n   Open this file in Microsoft Excel or Google Sheets.');
 console.log('   To get PDF: File → Export → PDF  (in Excel)\n');

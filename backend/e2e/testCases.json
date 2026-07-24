@@ -1,5 +1,5 @@
 {
-  "totalTestCases": 125,
+  "totalTestCases": 135,
   "uiUxTests": {
     "category": "UI/UX Testing",
     "count": 32,
@@ -147,6 +147,22 @@
       { "id": "VAL_027", "name": "SQL injection prevention", "expectedResult": "Queries sanitized", "priority": "CRITICAL" },
       { "id": "VAL_028", "name": "XSS prevention - user input", "expectedResult": "Input escaped", "priority": "CRITICAL" },
       { "id": "VAL_029", "name": "API response validation - data types", "expectedResult": "Types correct", "priority": "HIGH" }
+    ]
+  },
+  "vulnerabilityTests": {
+    "category": "Vulnerability Testing",
+    "count": 10,
+    "tests": [
+      { "id": "VULN_001", "name": "SQL Injection in Search Parameters", "expectedResult": "SQL keywords ignored/escaped, no error", "priority": "CRITICAL" },
+      { "id": "VULN_002", "name": "Cross-Site Scripting (XSS) Input Sanitization", "expectedResult": "HTML tags sanitized/escaped, no execute", "priority": "CRITICAL" },
+      { "id": "VULN_003", "name": "NoSQL Query Injection Check", "expectedResult": "Object payloads rejected, no unauthorized access", "priority": "CRITICAL" },
+      { "id": "VULN_004", "name": "Broken Object-Level Authorization (BOLA)", "expectedResult": "Access to other users bookings blocked (403)", "priority": "CRITICAL" },
+      { "id": "VULN_005", "name": "Unauthorized Endpoint Bypass", "expectedResult": "Admin routes require admin role (401/403)", "priority": "HIGH" },
+      { "id": "VULN_006", "name": "JWT Signature Spoofing", "expectedResult": "Tampered JWT tokens rejected (401)", "priority": "CRITICAL" },
+      { "id": "VULN_007", "name": "Weak Cryptographic Storage", "expectedResult": "Safe bcrypt work factor >= 10 verified", "priority": "HIGH" },
+      { "id": "VULN_008", "name": "Directory Traversal in File Uploads", "expectedResult": "Filename paths sanitized to prevent traversal", "priority": "HIGH" },
+      { "id": "VULN_009", "name": "CORS Misconfiguration Verification", "expectedResult": "CORS policy restricts unauthorized origins", "priority": "MEDIUM" },
+      { "id": "VULN_010", "name": "Information Disclosure Prevention", "expectedResult": "Stack traces hidden in production server responses", "priority": "MEDIUM" }
     ]
   }
 }

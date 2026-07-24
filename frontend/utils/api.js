@@ -1,7 +1,27 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
-const BASE_URL = 'http://localhost:5000/api';
+// Smart URL detection:
+// - On web (Render): use same-origin relative path so frontend & backend share the domain
+// - On native (Expo Go / APK): use env variable or fallback to localhost for local dev
+const getBaseURL = () => {
+  if (Platform.OS === 'web') {
+    // On web, use relative URL — works on Render because backend serves frontend too
+    // Or use the explicit Render backend URL if frontend is on a separate static service
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    // If running on localhost (dev), use localhost:5000
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return 'http://localhost:5000/api';
+    }
+    // On Render production — use same origin (backend serves frontend)
+    return `${origin}/api`;
+  }
+  // Native: use env var or localhost for dev
+  return process.env.EXPO_PUBLIC_API_URL || 'http://localhost:5000/api';
+};
+
+const BASE_URL = getBaseURL();
 
 const api = axios.create({ baseURL: BASE_URL, timeout: 15000 });
 

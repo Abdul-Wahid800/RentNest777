@@ -1,6 +1,19 @@
 import { io } from 'socket.io-client';
+import { Platform } from 'react-native';
 
-const SOCKET_URL = 'http://localhost:5000';
+// Smart socket URL detection (mirrors api.js logic)
+const getSocketURL = () => {
+  if (Platform.OS === 'web') {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return 'http://localhost:5000';
+    }
+    return origin; // Same origin on Render — backend handles socket.io
+  }
+  return process.env.EXPO_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+};
+
+const SOCKET_URL = getSocketURL();
 
 let socket = null;
 

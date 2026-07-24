@@ -4,6 +4,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
@@ -12,9 +13,16 @@ const io = new Server(server, {
 });
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
-app.use(cors());
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGIN || '*',
+  credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+// ─── Serve Frontend Static Build ──────────────────────────────────────────────
+const FRONTEND_DIST = path.join(__dirname, '../frontend/dist');
+app.use(express.static(FRONTEND_DIST));
 
 // ─── Database Connection ───────────────────────────────────────────────────────
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/rentnest';
@@ -163,8 +171,21 @@ io.on('connection', (socket) => {
   });
 });
 
+// ─── SPA Catch-All (must be AFTER API routes) ─────────────────────────────────
+// Serves index.html for any non-API route so React Navigation works on refresh
+app.get('*', (req, res) => {
+  const indexPath = path.join(__dirname, '../frontend/dist/index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      res.status(200).json({ status: 'ok', message: 'RentNest API is running' });
+    }
+  });
+});
+
 // ─── Error Handler ────────────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
+});
+
 });

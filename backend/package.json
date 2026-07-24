@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "start:prod": "node server.js",
     "dev": "nodemon server.js",
+    "build": "cd ../frontend && npm install && npx expo export --platform web --output-dir dist",
     "test:web": "node ./e2e/selenium/webE2eTests.js",
     "test:mobile": "node ./e2e/appium/mobileE2eTests.js",
     "test:full": "node ./e2e/testRunner.js",

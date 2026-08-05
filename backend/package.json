@@ -30,7 +30,6 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "axios": "^1.6.0",
     "nodemon": "^3.0.2",
     "selenium-webdriver": "^4.15.3",
     "wd": "^1.14.0",
